@@ -6,9 +6,21 @@ export function _(string) {
 }
 
 export function initLocalisation(defaultLanguage, availableLanguages) {
-  String.locale = defaultLanguage
-  String.toLocaleString(availableLanguages)
-  overrideFromURLParameter()
+  let lang = getParameterValue('lang')
+  if(lang===null) {
+    String.locale = defaultLanguage
+    console.log(`using language '${defaultLanguage}'.`)
+  } else {
+    if(Object.keys(availableLanguages).includes(lang)) {
+      String.locale = lang
+      console.log(`language overriden via URL parameter to '${lang}'.`)
+    } else {
+      String.locale = defaultLanguage
+      console.log(`language override via URL parameter to '${lang}' failed. language not available. using default '${defaultLanguage}'.`)
+    }
+  }
+
+  String.toLocaleString(availableLanguages) // this is from l10n.js
   translateAll()
 }
 
@@ -32,20 +44,8 @@ function getParameterValue (parameter) {
   let regex = new RegExp(regexS)
   let results = regex.exec(window.location.href)
   if (results === null) {
-    return ''
+    return null
   } else {
     return results[1]
-  }
-}
-
-function overrideFromURLParameter() {
-  let lang = getParameterValue('lang')
-  // override language now.
-  if (lang !== '' && lang !== '') {
-    for (const value in window.availableLanguages) {
-      if (value === lang) {
-        String.locale = lang
-      }
-    }
   }
 }
