@@ -5,7 +5,7 @@ export function _(string) {
   return string.toLocaleString()
 }
 
-export function initLocalisation(defaultLanguage, availableLanguages) {
+export function init(defaultLanguage, availableLanguages) {
   let lang = getParameterValue('lang')
   if(lang===null) {
     String.locale = defaultLanguage
