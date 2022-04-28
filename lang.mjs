@@ -1,8 +1,12 @@
 import '../../redist/l10n.min.js'
 
+const _debug = false
+
 export function _(string) {
   'use strict'
-  return string.toLocaleString()
+  const retVal = string.toLocaleString()
+  if(_debug) console.log(`l10n: translating key "${string}" to "${retVal}"`)
+  return retVal
 }
 
 export function init(defaultLanguage, availableLanguages) {
@@ -28,10 +32,15 @@ function translateAll() {
   const allNodesHavingTranslateAttrib = document.querySelectorAll("*[translate]")
   
   allNodesHavingTranslateAttrib.forEach(node => {
+    if(_debug) console.log(`l10n: auto-html-tag translating for node ${node.localName}`)
     node.getAttribute("translate").split(',').forEach(attr => {
       const key = node.getAttribute(attr)
-      const val = _(key)  // translated text
-      node.setAttribute(attr, val)
+      if(key) {
+        const val = _(key)  // translated text
+        node.setAttribute(attr, val)
+      } else {
+        console.warn(`l10n: attribute "${key}" not found on element`)
+      }
     })
   })
 
