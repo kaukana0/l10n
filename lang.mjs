@@ -32,14 +32,14 @@ function translateAll() {
   const allNodesHavingTranslateAttrib = document.querySelectorAll("*[translate]")
   
   allNodesHavingTranslateAttrib.forEach(node => {
-    if(_debug) console.log(`l10n: auto-html-tag translating for node ${node.localName}`)
+    if(_debug) console.log(`l10n: html-tag auto-translating for node "${node.localName}"`)
     node.getAttribute("translate").split(',').forEach(attr => {
       const key = node.getAttribute(attr)
       if(key) {
         const val = _(key)  // translated text
         node.setAttribute(attr, val)
       } else {
-        console.warn(`l10n: attribute "${key}" not found on element`)
+        console.warn(`l10n: attribute "${attr}" not found on node "${node.localName}"`)
       }
     })
   })
