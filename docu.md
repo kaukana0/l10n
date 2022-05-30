@@ -1,11 +1,14 @@
 
 # usage in html
 
+## prerequisites
+
 assume, this is in l10n/en.json (the l10n in the app root, not in the component)
 
     {
         "title.main": "Food prices",
-        "title.sub": "in Europe"
+        "title.sub": "in Europe",
+        "footerText": "This is some footer text..."
     }
 
 this in a main.mjs file
@@ -16,11 +19,21 @@ this in a main.mjs file
         'fr': './l10n/fr.json'
     })
 
-and this in a html file
+## translate attributes
+
+in a html file
 
     <title-lines mainText="title.main" subText="title.sub" translate="mainText,subText"></title-lines>
 
 then the attributes "mainText" and "subText" will become "Food prices" and "in Europe", respectively (via setAttribute).
+
+## translate element's text
+
+in a html file
+
+    <div translate>footerText</div>
+
+the element's innerText will become "This is some footer text..."
 
 # usage in js
 

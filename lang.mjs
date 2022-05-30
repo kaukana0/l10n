@@ -1,4 +1,4 @@
-import '../../redist/l10n.min.js'
+import '../../redist/l10n.js'
 
 const _debug = false
 
@@ -6,6 +6,7 @@ export function _(string) {
   'use strict'
   const retVal = string.toLocaleString()
   if(_debug) console.log(`l10n: translating key "${string}" to "${retVal}"`)
+  if(retVal === string) console.warn(`l10n: missing translation for "${string}"`)
   return retVal
 }
 
@@ -35,11 +36,15 @@ function translateAll() {
     if(_debug) console.log(`l10n: html-tag auto-translating for node "${node.localName}"`)
     node.getAttribute("translate").split(',').forEach(attr => {
       const key = node.getAttribute(attr)
-      if(key) {
-        const val = _(key)  // translated text
-        node.setAttribute(attr, val)
+      if(key) { // attribute
+        const translation = _(key)
+        node.setAttribute(attr, translation)
       } else {
-        console.warn(`l10n: attribute "${attr}" not found on node "${node.localName}"`)
+        if(node.innerText) {  // element's text content
+          node.textContent = _(node.innerText)  // translation
+        } else {
+          console.warn(`l10n: node "${node.localName}" doesn't have any text content to translate"`)
+        }
       }
     })
   })
