@@ -33,20 +33,28 @@ function translateAll() {
   const allNodesHavingTranslateAttrib = document.querySelectorAll("*[translate]")
   
   allNodesHavingTranslateAttrib.forEach(node => {
-    if(_debug) console.log(`l10n: html-tag auto-translating for node "${node.localName}"`)
-    node.getAttribute("translate").split(',').forEach(attr => {
-      const key = node.getAttribute(attr)
-      if(key) { // attribute
-        const translation = _(key)
-        node.setAttribute(attr, translation)
+    if(_debug) console.log(`l10n: html-tag auto-translating for node "${node.localName}" with id "${node.id}"`)
+
+    if(node.getAttribute("translate") === "") {
+      // translate element's text content
+      if(node.innerText) {
+        node.textContent = _(node.innerText)  // translation
       } else {
-        if(node.innerText) {  // element's text content
-          node.textContent = _(node.innerText)  // translation
-        } else {
-          console.warn(`l10n: node "${node.localName}" doesn't have any text content to translate"`)
-        }
+        console.warn(`l10n: node "${node.localName}" doesn't contain any text content to translate`)
       }
-    })
+    } else {  
+      // translate attributes which are denoted and comma-separated in translate attribute
+      node.getAttribute("translate").split(',').forEach(attr => {
+        const key = node.getAttribute(attr)
+        if(key) { // attribute
+          const translation = _(key)
+          node.setAttribute(attr, translation)
+        } else {
+          console.warn(`l10n: node "${node.localName}" doesn't have an attribute "${attr}"`)
+        }
+      })
+    }
+
   })
 
 }
