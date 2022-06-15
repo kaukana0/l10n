@@ -38,7 +38,7 @@ function translateAll() {
     if(node.getAttribute("translate") === "") {
       // translate element's text content
       if(node.innerText) {
-        node.textContent = _(node.innerText)  // translation
+        node.innerHTML = _(node.innerText)  // translation
       } else {
         console.warn(`l10n: node "${node.localName}" doesn't contain any text content to translate`)
       }
