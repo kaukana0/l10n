@@ -10,7 +10,7 @@ export function _(string) {
   return retVal
 }
 
-export function init(defaultLanguage, availableLanguages) {
+export function init(defaultLanguage, availableLanguages, callback) {
   let lang = getParameterValue('lang')
   if(lang===null) {
     String.locale = defaultLanguage
@@ -27,6 +27,7 @@ export function init(defaultLanguage, availableLanguages) {
 
   String.toLocaleString(availableLanguages) // this is from l10n.js
   translateAll()
+  if(callback) callback()
 }
 
 function translateAll() {
