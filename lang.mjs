@@ -1,4 +1,5 @@
 import '../../redist/l10n.js'
+import {getURLParameterValue} from '../util/util.mjs'
 
 const _debug = false
 
@@ -11,7 +12,7 @@ export function _(string) {
 }
 
 export function init(defaultLanguage, availableLanguages, callback) {
-  let lang = getParameterValue('lang')
+  let lang = getURLParameterValue('lang')
   if(lang===null) {
     String.locale = defaultLanguage
     console.log(`using language '${defaultLanguage}'.`)
@@ -58,17 +59,4 @@ function translateAll() {
 
   })
 
-}
-
-function getParameterValue (parameter) {
-  'use strict'
-  parameter = parameter.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]')
-  let regexS = '[\\?&]' + parameter + '=([^&#]*)'
-  let regex = new RegExp(regexS)
-  let results = regex.exec(window.location.href)
-  if (results === null) {
-    return null
-  } else {
-    return results[1]
-  }
 }
